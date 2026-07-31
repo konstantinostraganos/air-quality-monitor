@@ -1,0 +1,14 @@
+.env
+*.duckdb
+*.duckdb.wal
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.dlt/
+analytics/target/
+analytics/dbt_packages/
+analytics/logs/
+.DS_Store
+.vscode/
+.idea/

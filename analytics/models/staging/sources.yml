@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: air_quality
+    tables:
+      - name: locations
+      - name: sensors
+      - name: measurements
