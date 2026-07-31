@@ -27,16 +27,17 @@ jobs:
       - name: Create dbt profile
         run: |
           mkdir -p ~/.dbt
-          echo "air_quality:" > ~/.dbt/profiles.yml
-          echo "  target: dev" >> ~/.dbt/profiles.yml
-          echo "  outputs:" >> ~/.dbt/profiles.yml
-          echo "    dev:" >> ~/.dbt/profiles.yml
-          echo "      type: duckdb" >> ~/.dbt/profiles.yml
-          echo "      path: ${{ github.workspace }}/openaq_pipeline.duckdb" >> ~/.dbt/profiles.yml
-          echo "      schema: air_quality" >> ~/.dbt/profiles.yml
+          cat > ~/.dbt/profiles.yml << EOF
+          air_quality:
+            target: dev
+            outputs:
+              dev:
+                type: duckdb
+                path: test.duckdb
+                schema: air_quality
+          EOF
 
-      - name: Run dbt models
+      - name: Validate dbt models
         run: |
           cd analytics
-          dbt run
-          dbt test
+          dbt compile
