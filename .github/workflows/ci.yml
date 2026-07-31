@@ -24,9 +24,18 @@ jobs:
       - name: Lint
         run: ruff check .
 
+      - name: Create dbt profile
+        run: |
+          mkdir -p ~/.dbt
+          echo "air_quality:" > ~/.dbt/profiles.yml
+          echo "  target: dev" >> ~/.dbt/profiles.yml
+          echo "  outputs:" >> ~/.dbt/profiles.yml
+          echo "    dev:" >> ~/.dbt/profiles.yml
+          echo "      type: duckdb" >> ~/.dbt/profiles.yml
+          echo "      path: ${{ github.workspace }}/openaq_pipeline.duckdb" >> ~/.dbt/profiles.yml
+          echo "      schema: air_quality" >> ~/.dbt/profiles.yml
+
       - name: Run dbt models
-        env:
-          OPENAQ_API_KEY: ${{ secrets.OPENAQ_API_KEY }}
         run: |
           cd analytics
           dbt run
