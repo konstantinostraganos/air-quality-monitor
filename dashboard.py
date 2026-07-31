@@ -3,10 +3,10 @@ Air Quality Dashboard
 Interactive dashboard for exploring air quality data across European cities.
 """
 
-import streamlit as st
 import duckdb
 import plotly.express as px
 import plotly.graph_objects as go
+import streamlit as st
 
 # ── Page config ──
 

@@ -1,5 +1,7 @@
 import os
+
 from dotenv import load_dotenv
+
 from pipeline import OpenAQClient
 
 load_dotenv()

@@ -3,15 +3,15 @@ Air Quality Data Pipeline
 Ingests air quality data from OpenAQ API v3 into DuckDB.
 """
  
-import os
 import logging
+import os
 import time
 from datetime import datetime, timedelta, timezone
- 
+
+import dlt
 import requests
 from dotenv import load_dotenv
-import dlt
- 
+
 load_dotenv()
  
 logging.basicConfig(
@@ -33,7 +33,7 @@ class OpenAQClient:
         self.session.headers.update({"X-API-Key": api_key})
         self._locations_cache = {}  # country_id -> locations list
  
-    def _get(self, endpoint: str, params: dict = None) -> dict:
+    def _get(self, endpoint: str, params: dict | None = None) -> dict:
         """Make a GET request with retry on rate limiting."""
         url = f"{self.BASE_URL}/{endpoint}"
         max_retries = 7
@@ -57,7 +57,7 @@ class OpenAQClient:
                     raise
                 time.sleep(2 ** attempt)
  
-        raise Exception(f"Max retries exceeded for {endpoint}")
+        raise RuntimeError(f"Max retries exceeded for {endpoint}")
  
     def get_locations(self, country_id: str, limit: int = 100) -> list:
         """Fetch all monitoring stations for a country, with caching."""
@@ -207,7 +207,7 @@ def measurements_resource(
                             "min_value": summary.get("min"),
                             "max_value": summary.get("max"),
                         }
-                except Exception as e:
+                except (requests.exceptions.RequestException, RuntimeError) as e:
                     # Skip failed sensors instead of crashing
                     logger.warning(f"Skipping sensor {sensor['id']}: {e}")
                     continue
