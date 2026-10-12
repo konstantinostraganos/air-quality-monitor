@@ -8,14 +8,14 @@ End-to-end data pipeline that ingests real-time air quality measurements from th
 OpenAQ API v3 → dlt (Python) → DuckDB → dbt → Streamlit
 ```
 
-| Layer         | Tool       | Purpose                                      |
-|---------------|------------|----------------------------------------------|
-| Ingestion     | dlt        | Extract from REST API, load into DuckDB      |
-| Storage       | DuckDB     | Lightweight columnar analytics database      |
-| Transform     | dbt        | Staging → Intermediate → Mart models in SQL  |
-| Dashboard     | Streamlit  | Interactive charts, maps, WHO alerts         |
-| Quality       | dbt tests  | not_null, unique, accepted_values checks     |
-| CI            | GitHub Actions | Lint + dbt test on every push             |
+| Layer     | Tool           | Purpose                                  |
+|-----------|----------------|------------------------------------------|
+| Ingestion | dlt            | Extract from REST API, load into DuckDB  |
+| Storage   | DuckDB         | Lightweight columnar analytics database  |
+| Transform | dbt            | Staging → Mart models in SQL             |
+| Dashboard | Streamlit      | Interactive charts, maps, WHO alerts     |
+| Quality   | dbt tests      | not_null, unique, accepted_values checks |
+| CI        | GitHub Actions | Lint + dbt compile on every push         |
 
 ## Dashboard
 
@@ -54,7 +54,7 @@ docker-compose up
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/air-quality-monitor.git
+git clone https://github.com/konstantinostraganos/air-quality-monitor.git
 cd air-quality-monitor
 
 # Create virtual environment
