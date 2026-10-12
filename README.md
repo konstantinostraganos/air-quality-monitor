@@ -44,7 +44,9 @@ The dashboard provides:
 ### Option 1: Docker (recommended)
 
 ```bash
-cp .env.example .env
+git clone https://github.com/konstantinostraganos/air-quality-monitor.git
+cd air-quality-monitor
+cp .env.example .env        # Windows: copy .env.example .env
 # Add your OpenAQ API key to .env
 docker-compose up
 # Dashboard available at http://localhost:8501
@@ -65,7 +67,7 @@ source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
 # Configure environment
-cp .env.example .env
+cp .env.example .env        # Windows: copy .env.example .env
 # Add your OpenAQ API key to .env
 
 # Run the pipeline
@@ -120,10 +122,9 @@ air-quality-monitor/
 ├── .gitignore               # Git exclusions
 ├── analytics/               # dbt project
 │   ├── dbt_project.yml
-│   ├── models/
-│   │   ├── staging/
-│   │   └── marts/
-│   └── tests/
+│   └── models/
+│       ├── staging/
+│       └── marts/
 ├── tests/                   # Python tests
 └── .github/workflows/
     └── ci.yml               # GitHub Actions CI
@@ -137,7 +138,7 @@ air-quality-monitor/
 - **dbt** — SQL transformation layer
 - **Streamlit** — interactive dashboard framework
 - **Plotly** — charts and maps
-- **GitHub Actions** — CI/CD
+- **GitHub Actions** — CI
 - **Docker** — containerized deployment
 
 ## Data Source
