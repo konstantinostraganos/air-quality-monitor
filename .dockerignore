@@ -1,0 +1,28 @@
+# Secrets: injected at runtime via env_file, never baked into the image
+.env
+.env.*
+!.env.example
+.dlt/
+
+# Version control and local environments
+.git/
+.venv/
+venv/
+
+# Python caches
+__pycache__/
+*.py[cod]
+.ruff_cache/
+
+# Local data and build artifacts, regenerated inside the container
+*.duckdb
+*.duckdb.wal
+data/
+analytics/target/
+analytics/dbt_packages/
+analytics/logs/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
