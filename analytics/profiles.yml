@@ -1,0 +1,9 @@
+# Lives next to dbt_project.yml so dbt finds it without a ~/.dbt setup, locally and in Docker.
+# The path is relative to analytics/, where dbt is run from.
+air_quality:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ../data/openaq_pipeline.duckdb
+      schema: air_quality

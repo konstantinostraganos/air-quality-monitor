@@ -20,6 +20,9 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
 )
 logger = logging.getLogger(__name__)
+
+# Kept under data/ so the docker-compose volume persists it across container restarts
+DB_PATH = "data/openaq_pipeline.duckdb"
  
  
 class OpenAQClient:
@@ -233,9 +236,10 @@ def main():
     logger.info(f"Starting pipeline for countries: {countries}")
     client = OpenAQClient(api_key)
  
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
     pipeline = dlt.pipeline(
         pipeline_name="openaq_pipeline",
-        destination="duckdb",
+        destination=dlt.destinations.duckdb(DB_PATH),
         dataset_name="air_quality",
     )
  

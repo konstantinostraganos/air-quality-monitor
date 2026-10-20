@@ -23,7 +23,7 @@ st.caption("Real-time air quality data from OpenAQ — WHO threshold alerts acro
 @st.cache_resource
 def get_connection():
     """Create a read-only DuckDB connection."""
-    return duckdb.connect("openaq_pipeline.duckdb", read_only=True)
+    return duckdb.connect("data/openaq_pipeline.duckdb", read_only=True)
 
 
 def run_query(query: str):

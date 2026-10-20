@@ -25,6 +25,6 @@ lint:
 	ruff format --check .
 
 clean:
-	rm -f *.duckdb *.duckdb.wal
+	rm -f data/*.duckdb data/*.duckdb.wal
 	rm -rf analytics/target analytics/dbt_packages analytics/logs
 	rm -rf __pycache__ .pytest_cache
