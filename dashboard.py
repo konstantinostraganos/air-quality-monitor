@@ -44,33 +44,25 @@ df_locations = run_query("SELECT * FROM air_quality.stg_locations")
 st.sidebar.header("Filters")
 
 countries = sorted(df_daily["country_code"].dropna().unique())
-selected_countries = st.sidebar.multiselect(
-    "Country", countries, default=countries
-)
+selected_countries = st.sidebar.multiselect("Country", countries, default=countries)
 
 parameters = sorted(df_daily["parameter"].dropna().unique())
-selected_params = st.sidebar.multiselect(
-    "Pollutant", parameters, default=["pm25"]
-)
+selected_params = st.sidebar.multiselect("Pollutant", parameters, default=["pm25"])
 
 if not df_daily.empty and "measurement_date" in df_daily.columns:
     min_date = df_daily["measurement_date"].min()
     max_date = df_daily["measurement_date"].max()
-    date_range = st.sidebar.date_input(
-        "Date range", value=(min_date, max_date), min_value=min_date, max_value=max_date
-    )
+    date_range = st.sidebar.date_input("Date range", value=(min_date, max_date), min_value=min_date, max_value=max_date)
 else:
     date_range = None
 
 # ── Apply filters ──
 
-filtered = df_daily[
-    (df_daily["country_code"].isin(selected_countries))
-    & (df_daily["parameter"].isin(selected_params))
-]
+filtered = df_daily[(df_daily["country_code"].isin(selected_countries)) & (df_daily["parameter"].isin(selected_params))]
 
 if date_range and len(date_range) == 2:
     import pandas as pd
+
     filtered = filtered[
         (filtered["measurement_date"] >= pd.Timestamp(date_range[0]))
         & (filtered["measurement_date"] <= pd.Timestamp(date_range[1]))
@@ -89,10 +81,7 @@ with col3:
     st.metric("Countries", filtered["country_code"].nunique())
 with col4:
     alerts_count = len(
-        df_alerts[
-            (df_alerts["who_status"] == "EXCEEDED")
-            & (df_alerts["country_code"].isin(selected_countries))
-        ]
+        df_alerts[(df_alerts["who_status"] == "EXCEEDED") & (df_alerts["country_code"].isin(selected_countries))]
     )
     st.metric("WHO Alerts", alerts_count)
 
@@ -135,8 +124,7 @@ st.markdown("---")
 st.subheader("Pollutant Trends Over Time")
 
 filtered_trends = df_trends[
-    (df_trends["country_code"].isin(selected_countries))
-    & (df_trends["parameter"].isin(selected_params))
+    (df_trends["country_code"].isin(selected_countries)) & (df_trends["parameter"].isin(selected_params))
 ]
 
 if not filtered_trends.empty:
@@ -151,21 +139,25 @@ if not filtered_trends.empty:
         for param in city_trends["parameter"].unique():
             param_data = city_trends[city_trends["parameter"] == param]
 
-            fig_line.add_trace(go.Scatter(
-                x=param_data["measurement_date"],
-                y=param_data["daily_avg"],
-                mode="lines+markers",
-                name=f"{param} (daily)",
-                opacity=0.4,
-            ))
+            fig_line.add_trace(
+                go.Scatter(
+                    x=param_data["measurement_date"],
+                    y=param_data["daily_avg"],
+                    mode="lines+markers",
+                    name=f"{param} (daily)",
+                    opacity=0.4,
+                )
+            )
 
-            fig_line.add_trace(go.Scatter(
-                x=param_data["measurement_date"],
-                y=param_data["moving_avg_3d"],
-                mode="lines",
-                name=f"{param} (3-day MA)",
-                line={"width": 3},
-            ))
+            fig_line.add_trace(
+                go.Scatter(
+                    x=param_data["measurement_date"],
+                    y=param_data["moving_avg_3d"],
+                    mode="lines",
+                    name=f"{param} (3-day MA)",
+                    line={"width": 3},
+                )
+            )
 
         fig_line.update_layout(
             xaxis_title="Date",
@@ -185,8 +177,7 @@ st.markdown("---")
 st.subheader("⚠️ WHO Threshold Alerts")
 
 alerts_filtered = df_alerts[
-    (df_alerts["who_status"] == "EXCEEDED")
-    & (df_alerts["country_code"].isin(selected_countries))
+    (df_alerts["who_status"] == "EXCEEDED") & (df_alerts["country_code"].isin(selected_countries))
 ]
 
 if not alerts_filtered.empty:
@@ -205,11 +196,7 @@ st.markdown("---")
 st.subheader("🏳️ Country Comparison")
 
 if not filtered.empty:
-    country_avg = (
-        filtered.groupby(["country_code", "parameter"])["daily_avg"]
-        .mean()
-        .reset_index()
-    )
+    country_avg = filtered.groupby(["country_code", "parameter"])["daily_avg"].mean().reset_index()
 
     fig_compare = px.bar(
         country_avg,
